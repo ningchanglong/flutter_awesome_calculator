@@ -37,7 +37,7 @@ class FlutterAwesomeCalculator extends StatefulWidget {
 
   ///Bool value for showing answer field of the calculator, if false then only calculator will be displayed
   bool? showAnswerField;
-  void Function(String answer, String expression)? onChanged;
+  void Function(String answer, String expression,String key)? onChanged;
 
   FlutterAwesomeCalculator(
       {Key? key,
@@ -410,7 +410,7 @@ class _FlutterAwesomeCalculatorState extends State<FlutterAwesomeCalculator> {
             resetInvalid();
             resetFontSize();
             if (widget.onChanged != null) {
-              widget.onChanged!(answer, userInput);
+              widget.onChanged!(answer, userInput,buttons[buttonIndex]);
             }
           });
         };
@@ -442,7 +442,7 @@ class _FlutterAwesomeCalculatorState extends State<FlutterAwesomeCalculator> {
       ///equal button
       case 19:
         return () {
-          equalPressed();
+          equalPressed(19);
         };
 
       case 1:
@@ -486,7 +486,7 @@ class _FlutterAwesomeCalculatorState extends State<FlutterAwesomeCalculator> {
   }
 
 // function to calculate the input operation
-  void equalPressed() {
+  void equalPressed(int index) {
     if (userInput.isEmpty) {
       return;
     }
@@ -498,12 +498,13 @@ class _FlutterAwesomeCalculatorState extends State<FlutterAwesomeCalculator> {
       ContextModel cm = ContextModel();
       double evaluatedAnswer = exp.evaluate(EvaluationType.REAL, cm);
       answer = evaluatedAnswer.toStringAsFixed(fractionDigits);
+      widget.onChanged?.call(answer, userInput,buttons[index]);
     } catch (e) {
       ///to remove last operator value from expression e.g if user press 6+ and press equal
       ///we remove last + from expression
       finalUserInput = finalUserInput.substring(0, finalUserInput.length - 1);
       userInput = finalUserInput;
-      equalPressed();
+      equalPressed(index);
       return;
     }
     answerFontSize = 20;
@@ -590,7 +591,7 @@ class _FlutterAwesomeCalculatorState extends State<FlutterAwesomeCalculator> {
       checkResultLength();
 
       if (widget.onChanged != null) {
-        widget.onChanged!(answer, userInput);
+        widget.onChanged!(answer, userInput,buttons[index]);
       }
     } else {
       showErrorSnackBar('Non supported value');
