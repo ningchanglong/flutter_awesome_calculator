@@ -436,6 +436,7 @@ class _FlutterAwesomeCalculatorState extends State<FlutterAwesomeCalculator> {
           if (!invalidResult) {
             resetInvalid();
           }
+          equalPressed(3);
           setState(() {});
         };
 
@@ -579,6 +580,7 @@ class _FlutterAwesomeCalculatorState extends State<FlutterAwesomeCalculator> {
       userInput = userInput.substring(0, userInput.length - 1);
       userInput += buttons[index];
     }
+    widget.onChanged?.call(answer,userInput,buttons[index]);
     setState(() {});
   }
 

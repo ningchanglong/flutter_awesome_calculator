@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
           fractionDigits: 1,
           buttonRadius: 8,
           onChanged: (ans,expression,key){
-
+            debugPrint("***${ans}****${expression}******${key}");
           },
         ),
       ),
